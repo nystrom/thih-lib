@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceList where
+import Source
 import Testbed
 import StaticList
 import HaskellPrims

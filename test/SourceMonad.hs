@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceMonad where
+import Source
 import Testbed
 import StaticMonad
 import HaskellPrims

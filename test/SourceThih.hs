@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceThih where
+import Source
 import Testbed
 import StaticThih
 import HaskellPrims

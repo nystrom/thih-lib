@@ -43,3 +43,65 @@ executables:
 
     dependencies:
     - thih
+
+tests:
+  test-list:
+    main: SourceList
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thih
+
+  test-maybe:
+    main: SourceMaybe
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thih
+
+  test-monad:
+    main: SourceMonad
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thih
+
+  test-prelude:
+    main: SourcePrelude
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thih
+
+  test-test:
+    main: SourceTest
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thih
+
+  test-thih:
+    main: SourceThih
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thih
+

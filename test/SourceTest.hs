@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceTest where
+import Source
 import Testbed
 import StaticTest
 import HaskellPrelude

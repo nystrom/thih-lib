@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourcePrelude where
+import Source
 import Testbed
 import HaskellPrims
 import StaticPrelude

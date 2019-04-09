@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceMaybe where
+import Source
 import Testbed
 import StaticMaybe
 import HaskellPrims
