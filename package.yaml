@@ -8,7 +8,7 @@ copyright:           "Copyright 2017 - Nate Nystrom"
 
 extra-source-files:
 - README.md
-- ChangeLog.md
+- LICENSE
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
