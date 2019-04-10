@@ -13,7 +13,8 @@
 -----------------------------------------------------------------------------
 
 module TIMain where
-import Data.List( (\\), intersect, union, partition )
+import Data.List ((\\), intersect, union, partition)
+import Control.Monad (zipWithM)
 import Id
 import Kind
 import Type
@@ -69,8 +70,8 @@ tiAlt ce as (pats, e) = do (ps, as', ts) <- tiPats pats
 
 tiAlts             :: ClassEnv -> [Assump] -> [Alt] -> Type -> TI [Pred]
 tiAlts ce as alts t = do psts <- mapM (tiAlt ce as) alts
-                         mapM (unify t) (map snd psts)
-                         return (concat (map fst psts))
+                         mapM (unify t . snd) psts
+                         return (concatMap fst psts)
 
 -----------------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ withDefaults f ce vs ps
             tss = map (candidates ce) vps
 
 defaultedPreds :: Monad m => ClassEnv -> [Tyvar] -> [Pred] -> m [Pred]
-defaultedPreds  = withDefaults (\vps ts -> concat (map snd vps))
+defaultedPreds  = withDefaults (\vps ts -> concatMap snd vps)
 
 defaultSubst   :: Monad m => ClassEnv -> [Tyvar] -> [Pred] -> m Subst
 defaultSubst    = withDefaults (\vps ts -> zip (map fst vps) ts)
@@ -150,7 +151,7 @@ tiImpls ce as bs = do ts <- mapM (\_ -> newTVar Star) bs
                           scs   = map toScheme ts
                           as'   = zipWith (:>:) is scs ++ as
                           altss = map snd bs
-                      pss <- sequence (zipWith (tiAlts ce as') altss ts)
+                      pss <- zipWithM (tiAlts ce as') altss ts
                       s   <- getSubst
                       let ps'     = apply s (concat pss)
                           ts'     = apply s ts
