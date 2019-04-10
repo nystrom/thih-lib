@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceMonad where
+import Expr
 import Source
 import Testbed
 import StaticMonad

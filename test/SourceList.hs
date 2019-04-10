@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceList where
+import Expr
 import Source
 import Testbed
 import StaticList

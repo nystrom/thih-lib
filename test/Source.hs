@@ -11,8 +11,8 @@ import TIMonad
 import Infer
 import Lit
 import Pat
+import Expr
 import StaticPrelude
-import TIMain (Expr(..), Alt, BindGroup)
 
 -----------------------------------------------------------------------------
 -- The following helper functions are used to construct sample programs; if we

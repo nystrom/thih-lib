@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourceTest where
+import Expr
 import Source
 import Testbed
 import StaticTest

@@ -31,6 +31,7 @@ import Unify
 import Assump
 import Lit
 import Pat
+import Expr
 import TIMain
 import TIProg
 import Static

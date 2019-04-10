@@ -25,17 +25,7 @@ import TIMonad
 import Infer
 import Lit
 import Pat
-
------------------------------------------------------------------------------
-
-data Expr = Var   Id
-          | Lit   Literal
-          | Const Assump
-          | Ap    Expr Expr
-          | Let   BindGroup Expr
-
-          | Lam   Alt
-          | Case  Expr [(Pat,Expr)]
+import Expr
 
 -----------------------------------------------------------------------------
 
@@ -71,8 +61,6 @@ tiExpr ce as (Case e branches)
        return (ps++concat pss, v)
 
 -----------------------------------------------------------------------------
-
-type Alt = ([Pat], Expr)
 
 tiAlt                :: Infer Alt Type
 tiAlt ce as (pats, e) = do (ps, as', ts) <- tiPats pats
@@ -131,8 +119,6 @@ defaultSubst    = withDefaults (\vps ts -> zip (map fst vps) ts)
 
 -----------------------------------------------------------------------------
 
-type Expl = (Id, Scheme, [Alt])
-
 tiExpl :: ClassEnv -> [Assump] -> Expl -> TI [Pred]
 tiExpl ce as (i, sc, alts)
         = do (qs :=> t) <- freshInst sc
@@ -153,8 +139,6 @@ tiExpl ce as (i, sc, alts)
                  return ds
 
 -----------------------------------------------------------------------------
-
-type Impl   = (Id, [Alt])
 
 restricted   :: [Impl] -> Bool
 restricted bs = any simple bs
@@ -183,8 +167,6 @@ tiImpls ce as bs = do ts <- mapM (\_ -> newTVar Star) bs
                           in return (ds, zipWith (:>:) is scs')
 
 -----------------------------------------------------------------------------
-
-type BindGroup  = ([Expl], [[Impl]])
 
 tiBindGroup :: Infer BindGroup [Assump]
 tiBindGroup ce as (es,iss) =

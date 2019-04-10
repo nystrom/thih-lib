@@ -17,6 +17,7 @@ import Subst
 import Assump
 import TIMonad
 import Infer
+import Expr (BindGroup)
 import TIMain
 import Pred
 

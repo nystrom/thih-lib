@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 
 module SourcePrelude where
+import Expr
 import Source
 import Testbed
 import HaskellPrims
