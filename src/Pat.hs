@@ -27,9 +27,7 @@ data Pat        = PVar Id
                 | PWildcard
                 | PAs  Id Pat
                 | PLit Literal
-                | PNpk Id Integer
                 | PCon Assump [Pat]
-
                 | PLazy Pat
   deriving Show
 
@@ -46,9 +44,6 @@ tiPat (PAs i pat) = do (ps, as, t) <- tiPat pat
 
 tiPat (PLit l) = do (ps, t) <- tiLit l
                     return (ps, [], t)
-
-tiPat (PNpk i k)  = do t <- newTVar Star
-                       return ([IsIn "Integral" t], [i:>:toScheme t], t)
 
 tiPat (PCon (i:>:sc) pats) = do (ps,as,ts) <- tiPats pats
                                 t'         <- newTVar Star
