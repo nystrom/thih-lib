@@ -70,7 +70,7 @@ tiAlt ce as (pats, e) = do (ps, as', ts) <- tiPats pats
 
 tiAlts             :: ClassEnv -> [Assump] -> [Alt] -> Type -> TI [Pred]
 tiAlts ce as alts t = do psts <- mapM (tiAlt ce as) alts
-                         mapM (unify t . snd) psts
+                         mapM_ (unify t . snd) psts
                          return (concatMap fst psts)
 
 -----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ tiExpl ce as (i, sc, alts)
 -----------------------------------------------------------------------------
 
 restricted   :: [Impl] -> Bool
-restricted bs = any simple bs
+restricted = any simple
  where simple (i,alts) = any (null . fst) alts
 
 tiImpls         :: Infer [Impl] [Assump]
