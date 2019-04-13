@@ -1,13 +1,11 @@
 build:
-	stack build
+	stack build --fast
 
 clean:
 	stack clean
 
-run:
+run: build
 	stack run
 
-test: FORCE
-	stack test
-
-FORCE:
+test: build
+	stack test --fast
