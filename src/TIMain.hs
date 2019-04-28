@@ -46,6 +46,9 @@ tiExpr ce as (Ap e f)         = do (ps,te) <- tiExpr ce as e
 tiExpr ce as (Let bg e)       = do (ps, as') <- tiBindGroup ce as bg
                                    (qs, t)   <- tiExpr ce (as' ++ as) e
                                    return (ps ++ qs, t)
+tiExpr ce as (Ascribe e t)    = do (ps, te) <- tiExpr ce as e
+                                   unify t te
+                                   return (ps, t)
 
 tiExpr ce as (Lam alt)
   = tiAlt ce as alt

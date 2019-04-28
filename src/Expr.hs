@@ -21,6 +21,7 @@ data Expr = Var   Id
 
           | Lam   Alt
           | Case  Expr [(Pat,Expr)]
+          | Ascribe Expr Type
 
 -----------------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ type Alt = ([Pat], Expr)
 -----------------------------------------------------------------------------
 
 type Expl = (Id, Scheme, [Alt])
-type Impl   = (Id, [Alt])
+type Impl = (Id, [Alt])
 
 type BindGroup  = ([Expl], [[Impl]])
 
