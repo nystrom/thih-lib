@@ -28,6 +28,7 @@ library:
   - pretty
   - mtl
   - array
+  - containers
   build-tools:
     - happy
     - alex
@@ -43,6 +44,9 @@ executables:
 
     dependencies:
     - thih
+    - array
+    - mtl
+    - containers
 
 tests:
   test-list:

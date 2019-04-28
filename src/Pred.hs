@@ -13,7 +13,8 @@
 -----------------------------------------------------------------------------
 
 module Pred where
-import Data.List(union,(\\))
+import Data.List (union,(\\))
+import qualified Data.Map as M
 import Control.Monad(msum)
 import Id
 import Kind
@@ -55,25 +56,28 @@ type Inst     = Qual Pred
 
 -----------------------------------------------------------------------------
 
-data ClassEnv = ClassEnv { classes  :: Id -> Maybe Class,
+data ClassEnv = ClassEnv { classes  :: M.Map Id Class,
                            defaults :: [Type] }
 
 super     :: ClassEnv -> Id -> [Id]
-super ce i = case classes ce i of Just (is, its) -> is
+super ce i = case M.lookup i (classes ce) of
+                Just (is, its) -> is
+                Nothing -> error $ "missing super " ++ i 
 
 insts     :: ClassEnv -> Id -> [Inst]
-insts ce i = case classes ce i of Just (is, its) -> its
+insts ce i = case M.lookup i (classes ce) of
+                Just (is, its) -> its
+                Nothing -> error $ "missing inst " ++ i 
 
 defined :: Maybe a -> Bool
 defined (Just x) = True
 defined Nothing  = False
 
 modify       :: ClassEnv -> Id -> Class -> ClassEnv
-modify ce i c = ce{classes = \j -> if i==j then Just c
-                                           else classes ce j}
+modify ce i c = ce { classes = M.insert i c (classes ce) }
 
 initialEnv :: ClassEnv
-initialEnv  = ClassEnv { classes  = \i -> fail "class not defined",
+initialEnv  = ClassEnv { classes  = M.empty,
                          defaults = [tInteger, tDouble] }
 
 type EnvTransformer = ClassEnv -> Maybe ClassEnv
@@ -85,9 +89,9 @@ infixr 5 <:>
 
 addClass                              :: Id -> [Id] -> EnvTransformer
 addClass i is ce
- | defined (classes ce i)              = fail "class already defined"
- | any (not . defined . classes ce) is = fail "superclass not defined"
- | otherwise                           = return (modify ce i (is, []))
+ | defined (M.lookup i (classes ce))              = fail "class already defined"
+ | any (not . defined . (flip M.lookup) (classes ce)) is = fail "superclass not defined"
+ | otherwise                                      = return (modify ce i (is, []))
 
 addPreludeClasses :: EnvTransformer
 addPreludeClasses  = addCoreClasses <:> addNumClasses
@@ -113,9 +117,9 @@ addNumClasses   =   addClass "Num" ["Eq", "Show"]
 
 addInst                        :: [Pred] -> Pred -> EnvTransformer
 addInst ps p@(IsIn i _) ce
- | not (defined (classes ce i)) = fail "no class for instance"
- | any (overlap p) qs           = fail "overlapping instance"
- | otherwise                    = return (modify ce i c)
+ | not (defined (M.lookup i (classes ce))) = fail "no class for instance"
+ | any (overlap p) qs                      = fail "overlapping instance"
+ | otherwise                               = return (modify ce i c)
    where its = insts ce i
          qs  = [ q | (_ :=> q) <- its ]
          c   = (super ce i, (ps:=>p) : its)
